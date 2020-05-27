@@ -14,4 +14,10 @@ class UserInfo extends Model
         'github',
         'avatar_path'
     ];
+
+    // Relationships
+    public function user()
+    {
+        return $this->belongTo('App\User');
+    }
 }
