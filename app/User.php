@@ -38,9 +38,9 @@ class User extends Authenticatable
     ];
 
     // Relationships
-    public function info()
+    public function master_data()
     {
-        return $this->hasOne('App\UserInfo');
+        return $this->hasOne('App\MasterData');
     }
 
     public function category()
