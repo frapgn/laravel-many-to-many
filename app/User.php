@@ -42,4 +42,24 @@ class User extends Authenticatable
     {
         return $this->hasOne('App\UserInfo');
     }
+
+    public function category()
+    {
+        return $this->hasMany('App\Category');
+    }
+
+    public function tag()
+    {
+        return $this->hasMany('App\Tag');
+    }
+
+    public function page()
+    {
+        return $this->hasMany('App\Page');
+    }
+
+    public function photo()
+    {
+        return $this->hasMany('App\Photo');
+    }
 }
