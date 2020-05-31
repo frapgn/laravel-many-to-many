@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
+use App\Mail\SendNewMail;
+use Illuminate\Support\Facades\Mail;
 
 use App\Page;
 use App\User;
@@ -96,6 +98,8 @@ class PageController extends Controller
         }
 
         $page->tags()->attach($data['tags']);
+
+        Mail::to('firecaw331@dffwer.com')->send(new SendNewMail($page));
 
         return redirect()->route('admin.pages.show', $page->id);
     }
