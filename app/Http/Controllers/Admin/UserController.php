@@ -50,11 +50,7 @@ class UserController extends Controller
     public function show($id)
     {
         $user = User::find($id);
-        // var_dump($user->info->bio);
-        // dd($user->info);
 
-        $users = User::doesntHave('info')->get();
-        dd($users);
         return view('admin.users.show', compact('user'));
     }
 

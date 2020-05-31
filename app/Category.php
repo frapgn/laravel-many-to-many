@@ -17,7 +17,7 @@ class Category extends Model
         return $this->belongsTo('App\User');
     }
 
-    public function page()
+    public function pages()
     {
         return $this->hasMany('App\Page');
     }
