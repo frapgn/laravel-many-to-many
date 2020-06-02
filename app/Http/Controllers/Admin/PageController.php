@@ -125,7 +125,12 @@ class PageController extends Controller
      */
     public function edit($id)
     {
-        //
+        $page = Page::findOrFail($id);
+        $categories = Category::all();
+        $tags = Tag::all();
+        $photos = Photo::all();
+
+        return view('admin.pages.edit', compact('page','categories', 'tags', 'photos'));
     }
 
     /**
@@ -137,7 +142,34 @@ class PageController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $page = Page::findOrFail($id);
+        $data = $request->all();
+
+        $validator = Validator::make($data, [
+            'title' => 'required|max:200', //rimuovere required
+            'slug' => 'unique|max:255',
+            'summary' => 'max:65535',
+            'body' => 'max:65535',
+            'category_id' => 'exists:categories,id',
+            'tags' => 'array',
+            'tags.*' => 'exists:tags,id'
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()
+            ->withErrors($validator) // da aggiungere alla view
+            ->withInput();
+        }
+
+        /* Controllo se l'id dell'autore della pagina è lo stesso dell'utente loggato
+         * Se non lo è restituisco un errore 404 */
+        $userId = Auth::id();
+        $author = $page->user_id;
+        if ($userId != $author) {
+            abort('404');
+        }
+
+        // Upload new / delete old photos
     }
 
     /**
