@@ -99,7 +99,7 @@ class PageController extends Controller
 
         $page->tags()->attach($data['tags']);
 
-        Mail::to('firecaw331@dffwer.com')->send(new SendNewMail($page));
+        // Mail::to('mail@mail.com')->send(new SendNewMail($page));
 
         return redirect()->route('admin.pages.show', $page->id);
     }
@@ -147,7 +147,7 @@ class PageController extends Controller
 
         $validator = Validator::make($data, [
             'title' => 'required|max:200', //rimuovere required
-            'slug' => 'unique|max:255',
+            // 'slug' => 'unique|max:255',
             'summary' => 'max:65535',
             'body' => 'max:65535',
             'category_id' => 'exists:categories,id',
