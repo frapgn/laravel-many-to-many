@@ -12,7 +12,7 @@
                 <div>
                     <span>TAGS: </span>
                     @foreach ($page->tags as $tag)
-                    <span>{{$tag->name}} </span>
+                    <span>{{$tag->name}}</span>
                     @endforeach
                 </div>
 
