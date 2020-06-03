@@ -27,6 +27,7 @@
                     <textarea name="body" id="body" class="form-control" value="" rows="8" cols="80">{{old('body') ?? $page->body}}</textarea>
                     </div>
 
+                    {{-- CATEGORIES --}}
                     <div class="form-group">
                         <label for="category">Category</label>
                         <select class="form-control" name="category_id" id="category">
@@ -48,20 +49,39 @@
                         </select>
                     </div>
 
-                    {{-- DA FARE --}}
+                    {{-- TAGS --}}
                     <div class="form-group">
-                        @foreach ($tags as $key => $tag)
-                            <input type="checkbox" id="tag-{{$tag->id}}"name="tags[]" value="{{$tag->id}}"
-                             {{(is_array(old('tags')) &&  in_array($tag->id, old('tags'))) ? 'checked' : ''}}>
-                             <label for="tag-{{$tag->id}}">{{$tag->name}}</label>
+                        @foreach ($tags as $tag)
+                            @if (!empty(old('tags'))) {{-- se l'array old('tags') è pieno, cioè l'utente ha modificato qualcosa ma l'edit non è andato a buon fine) --}}
+                                {{-- stampa i dati salvati durante la sessione --}}
+                                @if (is_array(old('tags')) &&  in_array($tag->id, old('tags')))
+                                    <input type="checkbox" id="tag-{{$tag->id}}"name="tags[]" value="{{$tag->id}}" checked>
+                                    <label for="tag-{{$tag->id}}">{{$tag->name}}</label>
+                                @else
+                                    <input type="checkbox" id="tag-{{$tag->id}}"name="tags[]" value="{{$tag->id}}">
+                                    <label for="tag-{{$tag->id}}">{{$tag->name}}</label>
+                                @endif
+                            @else {{-- altrimenti stampa a partire dai dati salvati nel database --}}
+                                @if ($page->tags->contains($tag)) {{-- se la collection $page->tags contiene l'istanza $tag (accetta anche l'id) --}}
+                                    <input type="checkbox" id="tag-{{$tag->id}}"name="tags[]" value="{{$tag->id}}" checked>
+                                    <label for="tag-{{$tag->id}}">{{$tag->name}}</label>
+                                @else
+                                    <input type="checkbox" id="tag-{{$tag->id}}"name="tags[]" value="{{$tag->id}}">
+                                    <label for="tag-{{$tag->id}}">{{$tag->name}}</label>
+                                @endif
+                            @endif
                         @endforeach
                     </div>
 
+                    {{-- PHOTOS --}}
                     <div class="form-group">
                         <h4>Photos</h4>
-                        <select class="form-control" name="photos">
-                            {{-- Upload multi images --}}
-                        </select>
+
+                            @foreach ($page->photos as $photo)
+                                <input type="checkbox" name="photos[]" value="{{$photo->id}}">
+                                <img src="{{asset('storage/'  . $photo->path)}}" alt="">
+                            @endforeach
+
                     </div>
                     <input type="submit" value="Store" class="btn btn-primary float-right">
                 </form>
